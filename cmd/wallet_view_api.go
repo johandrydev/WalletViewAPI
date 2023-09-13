@@ -13,10 +13,13 @@ import (
 const port = "8080"
 
 func main() {
-	// read the port from env var
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
-	r.Get("/", handler.GetWalletBalance)
+
+	// init the handlers
+	accountHandler := handler.NewAccount()
+	r.Get("/walletBalance", accountHandler.GetAccountBalance)
+
 	log.Printf("Starting server at port :%s\n", port)
 	log.Fatal(http.ListenAndServe(
 		fmt.Sprintf(":%s", port),
